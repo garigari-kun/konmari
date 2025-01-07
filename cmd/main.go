@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
-	"strings"
 
+	"github.com/garigari-kun/konmari/internal/organizer"
 	"github.com/urfave/cli/v2"
 )
 
@@ -20,8 +19,7 @@ func main() {
 			}
 
 			dirPath := c.Args().Get(0)
-
-			return printFilesInDirectory(dirPath)
+			return organizer.OrganizeFiles(dirPath)
 		},
 	}
 
@@ -29,24 +27,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func printFilesInDirectory(dirPath string) error {
-	if _, err := os.Stat(dirPath); os.IsNotExist(err) {
-		return fmt.Errorf("Directory does not exist: %s", dirPath)
-	}
-
-	entries, err := os.ReadDir(dirPath)
-	if err != nil {
-		return err
-	}
-
-	for _, entry := range entries {
-		if entry.IsDir() || strings.HasPrefix(entry.Name(), ".") {
-			continue
-		}
-		fmt.Println(filepath.Join(dirPath, entry.Name()))
-	}
-
-	return nil
 }
