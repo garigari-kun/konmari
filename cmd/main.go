@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -15,16 +14,14 @@ func main() {
 		Usage: "Organize your directory by file extensions",
 		Action: func(c *cli.Context) error {
 			if c.NArg() < 1 {
-				return fmt.Errorf("Please provide a directory path")
+				return cli.Exit("Please provide a directory path", 1)
 			}
-
 			dirPath := c.Args().Get(0)
 			return organizer.OrganizeFiles(dirPath)
 		},
 	}
 
-	err := app.Run(os.Args)
-	if err != nil {
+	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
 }
