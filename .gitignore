@@ -25,3 +25,5 @@ go.work.sum
 .env
 
 organize_test_directory
+
+.DS_Store
