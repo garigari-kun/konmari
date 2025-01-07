@@ -22,10 +22,9 @@ func OrganizeFiles(dirPath string) error {
 
 	for ext, files := range fileGroups {
 		subDir := filepath.Join(dirPath, ext)
-		if err := os.MkdirAll(subDir, os.ModePerm); err != nil {
-			return fmt.Errorf("Failed to create directory %s: %v", subDir, err)
+		if err := utils.CreateDirectory(subDir); err != nil {
+			return err
 		}
-		fmt.Printf("Created directory: %s\n", subDir)
 
 		for _, file := range files {
 			oldPath := filepath.Join(dirPath, file)
