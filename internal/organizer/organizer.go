@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
+
+	"github.com/garigari-kun/konmari/internal/utils"
 )
 
 func OrganizeFiles(dirPath string) error {
@@ -17,22 +18,7 @@ func OrganizeFiles(dirPath string) error {
 		return err
 	}
 
-	fileGroups := make(map[string][]string)
-
-	for _, entry := range entries {
-		if entry.IsDir() || strings.HasPrefix(entry.Name(), ".") {
-			continue
-		}
-
-		ext := strings.ToLower(filepath.Ext(entry.Name()))
-		if ext == "" {
-			ext = "no_extension"
-		} else {
-			ext = ext[1:]
-		}
-
-		fileGroups[ext] = append(fileGroups[ext], entry.Name())
-	}
+	fileGroups := utils.GroupFilesByExtension(entries)
 
 	for ext, files := range fileGroups {
 		subDir := filepath.Join(dirPath, ext)
